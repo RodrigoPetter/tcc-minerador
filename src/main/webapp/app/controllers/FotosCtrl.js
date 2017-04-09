@@ -12,13 +12,12 @@ angular.module('app')
 
 
     $scope.incluir = function () {
-        dadoFormatado = $scope.data;
-        dadoFormatado.analisada = false;
-        dadoFormatado.owner = $scope.listaPessoas[$scope.data.owner];
         dadoFormatado = {
-            path: 'aaaa',
-            analisada: false
+            imagem: $scope.data.imagem.base64,
+            analisada: false,
+            owner: $scope.listaPessoas[$scope.data.owner]._links.self.href
         }
+        console.log("dadoFormatado:");
         console.log(dadoFormatado);
 
         fotosService.save(dadoFormatado)

@@ -1,6 +1,7 @@
 package tcc.entity
 
 import groovy.transform.Canonical
+import javassist.bytecode.ByteArray
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -22,7 +23,8 @@ class Foto implements Serializable{
     @GeneratedValue(strategy=GenerationType.AUTO)
     Long id
 
-    String path
+    @Column(length = 20971520)
+    byte[] imagem
 
     @Column(nullable = false)
     @NotNull
@@ -30,6 +32,7 @@ class Foto implements Serializable{
 
     @ManyToOne
     @JoinColumn(name="owner")
+    @NotNull
     Pessoa owner
 
     @ManyToMany(mappedBy="apareceEm")

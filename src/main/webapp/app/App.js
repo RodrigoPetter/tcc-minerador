@@ -1,4 +1,4 @@
-angular.module('app',['ngRoute', 'ngResource'])
+angular.module('app',['ngRoute', 'ngResource', 'naif.base64'])
 .config(function($routeProvider, $locationProvider)
 {
     $routeProvider

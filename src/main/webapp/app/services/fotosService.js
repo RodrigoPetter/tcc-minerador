@@ -1,6 +1,6 @@
 angular.module('app')
 .factory("fotosService", ["$resource",  function ($resource) {
-    resource = $resource("/foto");
+    var resource = $resource("/foto");
     var service = {
         getFotos: function () {
             return resource.get().$promise;
