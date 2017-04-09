@@ -1,8 +1,6 @@
-var app = angular.module('app',['ngRoute']);
-
-app.config(function($routeProvider, $locationProvider)
+angular.module('app',['ngRoute', 'ngResource'])
+.config(function($routeProvider, $locationProvider)
 {
-
     $routeProvider
         .when('/', {
             templateUrl : 'partials/home.html',
@@ -11,10 +9,9 @@ app.config(function($routeProvider, $locationProvider)
             templateUrl : 'partials/pessoas/pessoas.html',
             controller     : 'PessoasCtrl',
         })
+        .when('/fotos', {
+            templateUrl : 'partials/fotos/fotos.html',
+            controller     : 'FotosCtrl',
+        })
         .otherwise ({ redirectTo: '/' });
-});
-
-app.controller('PessoasCtrl', function($scope) {
-
-    $scope.message = 'Everyone come and see how good I look!';
 });

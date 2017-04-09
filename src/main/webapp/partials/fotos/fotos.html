@@ -1,0 +1,45 @@
+<div class="page-header">
+    <h1>Lista de fotos</h1>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <th>
+                ID
+            </th>
+            <th>
+                Caminho
+            </th>
+            <th>Já analisada?</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="foto in listaFotos">
+                <td>
+                    <span ng-bind="extrairID(foto)"></span>
+                </td>
+                <td>
+                    <span ng-bind="foto.path"></span>
+                </td>
+                <td>
+                    <span ng-bind="foto.analisada | boolean"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label>Incluir nova foto</label>
+            <input type="text" class="form-control" placeholder="Caminho" ng-model="data.path">
+        </div>
+        <div class="form-group col-md-3">
+            <select name="repeatSelect" id="repeatSelect" ng-model="data.owner">
+                <option value="">---Selecione o dono---</option>
+                <option ng-repeat="(key, pessoa) in listaPessoas" value="{{key}}">{{pessoa.nomeCompleto}}</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default" ng-click="incluir()">Incluir</button>
+        <span ng-bind="mensagem"></span>
+    </div>
+</div>

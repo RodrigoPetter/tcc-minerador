@@ -2,6 +2,7 @@ package tcc.entity
 
 import groovy.transform.Canonical
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -12,6 +13,8 @@ import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.Table
+import javax.persistence.UniqueConstraint
+import javax.validation.constraints.NotNull
 
 @Canonical
 @Entity
@@ -21,6 +24,9 @@ class Pessoa implements Serializable{
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     Long id
+
+    @Column(nullable = false, unique = true)
+    @NotNull
     String nomeCompleto
 
     @ManyToMany
@@ -41,6 +47,10 @@ class Pessoa implements Serializable{
     @JoinColumn(name="owner")
     List<Foto> fotos
 
-    @ManyToMany(mappedBy="compostaPor")
+    @ManyToMany
+    @JoinTable(name="fotos_pessoas",
+            joinColumns=@JoinColumn(name="pessoa_id"),
+            inverseJoinColumns=@JoinColumn(name="foto_id")
+    )
     List<Foto> apareceEm
 }

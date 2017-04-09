@@ -2,16 +2,16 @@ package tcc.entity
 
 import groovy.transform.Canonical
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
 import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
 import javax.persistence.Table
+import javax.validation.constraints.NotNull
 
 @Canonical
 @Entity
@@ -24,14 +24,14 @@ class Foto implements Serializable{
 
     String path
 
+    @Column(nullable = false)
+    @NotNull
+    boolean analisada = false
+
     @ManyToOne
     @JoinColumn(name="owner")
     Pessoa owner
 
-    @ManyToMany
-    @JoinTable(name="fotos_pessoas",
-            joinColumns=@JoinColumn(name="foto_id"),
-            inverseJoinColumns=@JoinColumn(name="pessoa_id")
-    )
+    @ManyToMany(mappedBy="apareceEm")
     List<Pessoa> compostaPor
 }

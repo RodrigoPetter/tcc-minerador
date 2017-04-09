@@ -1,3 +1,35 @@
 <div class="page-header">
     <h1>Lista de pessoas</h1>
 </div>
+<div class="container-fluid">
+    <div class="row">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Nome Completo
+                </th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="pessoa in listaPessoas">
+                    <td>
+                        <span ng-bind="extrairID(pessoa)"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="pessoa.nomeCompleto"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label>Incluir nova pessoa</label>
+            <input type="text" class="form-control" placeholder="Nome completo" ng-model="incluirNome">
+        </div>
+        <button type="submit" class="btn btn-default" ng-click="incluir()">Incluir</button>
+        <span ng-bind="mensagem"></span>
+    </div>
+</div>
