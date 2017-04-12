@@ -10,5 +10,5 @@ import tcc.entity.Foto
 @RepositoryRestResource(collectionResourceRel = "foto", path = "foto")
 interface FotoRepository extends JpaRepository<Foto, Long> {
 
-    Foto findById(@Param("Id") Long id)
+    Foto findById(@Param("id") Long id)
 }

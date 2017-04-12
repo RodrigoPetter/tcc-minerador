@@ -29,5 +29,5 @@ dependencies {
 	compile('org.springframework.data:spring-data-rest-webmvc')
 	compile('mysql:mysql-connector-java')
 	compile('org.codehaus.groovy:groovy')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile group: 'org.apache.xmlrpc', name: 'xmlrpc-client', version: '3.1.3'
 }
