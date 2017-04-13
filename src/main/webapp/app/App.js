@@ -4,6 +4,7 @@ angular.module('app',['ngRoute', 'ngResource', 'naif.base64'])
     $routeProvider
         .when('/', {
             templateUrl : 'partials/home.html',
+            controller     : 'MineradorCtrl',
         })
         .when('/pessoas', {
             templateUrl : 'partials/pessoas/pessoas.html',

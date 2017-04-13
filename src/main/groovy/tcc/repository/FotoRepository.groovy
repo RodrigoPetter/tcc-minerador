@@ -11,4 +11,5 @@ import tcc.entity.Foto
 interface FotoRepository extends JpaRepository<Foto, Long> {
 
     Foto findById(@Param("id") Long id)
+    List<Foto> findByAnalisada(@Param("analisada") boolean analisada)
 }

@@ -35,7 +35,8 @@ class Minerador {
             Vector params = new Vector()
             params.addElement(Base64.encoder.encodeToString(f.imagem))
 
-            Object result = client.execute("descobrir", params)
+            String result = client.execute("descobrir", params)
+            result = result.replace(",]", "]")
 
             System.out.println("Resultado: "+ result)
 
