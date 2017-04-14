@@ -14,5 +14,9 @@ angular.module('app',['ngRoute', 'ngResource', 'naif.base64'])
             templateUrl : 'partials/fotos/fotos.html',
             controller     : 'FotosCtrl',
         })
+        .when('/config', {
+            templateUrl : 'partials/config.html',
+            controller     : 'ConfigCtrl',
+        })
         .otherwise ({ redirectTo: '/' });
 });

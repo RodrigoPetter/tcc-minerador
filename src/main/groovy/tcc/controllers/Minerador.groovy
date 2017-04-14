@@ -1,5 +1,7 @@
 package tcc.controllers
 
+import javax.xml.bind.DatatypeConverter
+import groovy.json.JsonSlurper
 import org.apache.xmlrpc.client.XmlRpcClient
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import tcc.entity.Foto
+import tcc.entity.Classifier
 import tcc.repository.FotoRepository
 import tcc.repository.PessoaRepository
+import tcc.repository.ClassifierRepository
 
 @RestController
 @RequestMapping("/minerador")
@@ -19,20 +23,24 @@ class Minerador {
     private PessoaRepository pr
     @Autowired
     private FotoRepository FR
+    @Autowired
+    private ClassifierRepository CR
     private URL url = new URL("http://192.168.0.16:8081/RPC2")
     private XmlRpcClient client = new XmlRpcClient()
 
     @RequestMapping(method=RequestMethod.GET)
-    Object processarImagem(@RequestParam("foto-id") Long id){
+    Object processarImagem(@RequestParam("foto-id") Long id, @RequestParam("classifier-id") Long classifierId){
         try {
             XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl()
             config.setServerURL(url)
 
             client.setConfig(config)
 
+            Classifier c = CR.findById(classifierId)
             Foto f = FR.findById(id)
 
             Vector params = new Vector()
+            params.addElement(Base64.encoder.encodeToString(c.arquivo))
             params.addElement(Base64.encoder.encodeToString(f.imagem))
 
             String result = client.execute("descobrir", params)
@@ -43,10 +51,57 @@ class Minerador {
             return result
         } catch (Exception exception) {
             System.err.println("JavaClient: " + exception)
+            return "Erro ao chamar servidor rpc do openface: "+exception
         }
     }
 
-    @RequestMapping(value="teste", method=RequestMethod.GET)
+    @RequestMapping(value="treinar", method=RequestMethod.GET)
+    String treinar(){
+
+        try {
+            //apaga tabela de classifiers
+            CR.deleteAll()
+
+            XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl()
+            config.setServerURL(url)
+
+            XmlRpcClient client = new XmlRpcClient()
+            client.setConfig(config)
+
+            Vector params = new Vector()
+
+            Object result = client.execute("treinar", params)
+
+            def jsonSlurper = new JsonSlurper()
+            def object = jsonSlurper.parseText(result)
+
+            Classifier c = new Classifier()
+            c.setNome(object.result.get(0).nome)
+            DatatypeConverter.parseBase64Binary(object.result.get(0).arquivo)
+            c.setArquivo(DatatypeConverter.parseBase64Binary(object.result.get(0).arquivo))
+            CR.save(c)
+
+            c = new Classifier()
+            c.setNome(object.result.get(1).nome)
+            c.setArquivo(DatatypeConverter.parseBase64Binary(object.result.get(1).arquivo))
+            CR.save(c)
+
+            c = new Classifier()
+            c.setNome(object.result.get(2).nome)
+            c.setArquivo(DatatypeConverter.parseBase64Binary(object.result.get(2).arquivo))
+            CR.save(c)
+
+            System.out.println("Treinamento concluído.")
+
+            return "Treinamento concluído."
+        } catch (Exception exception) {
+            System.err.println("JavaClient: " + exception)
+            return "Erro ao chamar servidor rpc do openface: "+exception.stackTrace
+        }
+
+    }
+
+    @RequestMapping(value="testar", method=RequestMethod.GET)
     String testar(){
 
         try {
@@ -69,9 +124,8 @@ class Minerador {
             return sum
         } catch (Exception exception) {
             System.err.println("JavaClient: " + exception)
+            return "Erro ao chamar servidor rpc do openface: "+exception
         }
-
-        return "aaaaaaaa"
 
     }
 
