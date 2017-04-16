@@ -6,6 +6,11 @@ angular.module('app')
                 {
                     method:'GET',
                     url: '/minerador/treinar',
+                },
+            salvarResultado:
+                {
+                    method:'GET',
+                    url: '/minerador/salvarResultado',
                 }
         });
     var service = {
@@ -14,6 +19,10 @@ angular.module('app')
         },
         gerarClassifiers: function () {
             return resource.gerarTreinamentos().$promise;
+        },
+        salvarResultado: function (fotoId, pessoaNome) {
+            console.log("Vai salvar: "+fotoId+' - '+pessoaNome);
+            return resource.salvarResultado({"foto-id": fotoId, "pessoa-nome": pessoaNome}).$promise;
         }
     }
     return service;

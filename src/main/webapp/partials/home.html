@@ -9,11 +9,13 @@
      ng-repeat="foto in listaFotos">
     <div class="panel-body">
         <img style="max-width: 250px" data-ng-src="data:image/png;base64,{{foto.imagem}}"/>
-        <button type="submit" class="btn btn-default" ng-click="analisar(extrairID(foto))">Analisar</button>
+        <button type="submit"
+                class="btn btn-default"
+                ng-click="analisar(extrairID(foto))">Analisar</button>
         <button type="submit"
                 class="btn btn-default"
                 ng-if="foto.resultadoAnalise"
-                ng-click="salvar(extrairID(foto))">
+                ng-click="salvarResultado(extrairID(foto), foto.resultadoAnalise)">
             Salvar resultado
         </button>
         <div class="well well-lg" ng-if="foto.resultadoAnalise">

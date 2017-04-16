@@ -6,7 +6,8 @@ angular.module('app')
                 {
                     method:'GET',
                     url: '/foto/search/findByAnalisada',
-                }
+                },
+
         });
 
     var service = {

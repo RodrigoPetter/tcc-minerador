@@ -1,5 +1,7 @@
 package tcc.controllers
 
+import tcc.entity.Pessoa
+
 import javax.xml.bind.DatatypeConverter
 import groovy.json.JsonSlurper
 import org.apache.xmlrpc.client.XmlRpcClient
@@ -20,7 +22,7 @@ import tcc.repository.ClassifierRepository
 class Minerador {
 
     @Autowired
-    private PessoaRepository pr
+    private PessoaRepository PR
     @Autowired
     private FotoRepository FR
     @Autowired
@@ -91,6 +93,11 @@ class Minerador {
             c.setArquivo(DatatypeConverter.parseBase64Binary(object.result.get(2).arquivo))
             CR.save(c)
 
+            c = new Classifier()
+            c.setNome(object.result.get(3).nome)
+            c.setArquivo(DatatypeConverter.parseBase64Binary(object.result.get(3).arquivo))
+            CR.save(c)
+
             System.out.println("Treinamento concluído.")
 
             return "Treinamento concluído."
@@ -101,6 +108,24 @@ class Minerador {
 
     }
 
+    @RequestMapping(value="salvarResultado", method=RequestMethod.GET)
+    String salvarResultado(@RequestParam("foto-id") Long fotoId, @RequestParam("pessoa-nome") String pessoaNome){
+
+        Pessoa p = PR.findByNomeCompleto(pessoaNome)
+
+        println("Pessoa encontrada: "+p.nomeCompleto)
+
+        Foto f = FR.findById(fotoId)
+
+        p.apareceEm.add(f)
+        f.analisada = true
+
+        PR.save(p)
+        FR.save(f)
+
+        return "Relacionamento salvo com sucesso."
+
+    }
     @RequestMapping(value="testar", method=RequestMethod.GET)
     String testar(){
 

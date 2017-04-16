@@ -5,7 +5,6 @@ angular.module('app')
 
     $scope.data = {};
     $scope.extrairID = extratorID.extrair;
-    $scope.selectedClassifier = 0;
 
     atualizarTela();
     
@@ -18,6 +17,14 @@ angular.module('app')
             });
 
         });
+    }
+
+    $scope.salvarResultado = function (foto, resultadoAnalise) {
+        resultadoAnalise.forEach(function (item) {
+            mineradorService.salvarResultado(foto, item.Prediction).then(function (response) {
+                atualizarTela();
+            })
+        })
     }
 
     function atualizarTela(){
