@@ -4,7 +4,10 @@ function($scope, $routeParams, $window, pessoasService, extratorID) {
 
     $scope.extrairID = extratorID.extrair;
     $scope.pessoaId = $routeParams.pessoaId;
-    atualizarTela();
+    pessoasService.getPessoa($scope.pessoaId).then(function (response) {
+       $scope.nomePessoa =  response.nomeCompleto;
+        atualizarTela();
+    });
 
     $scope.amizades = function (pessoaId) {
         $window.location.href = "#/amizades/"+pessoaId;
@@ -27,7 +30,8 @@ function($scope, $routeParams, $window, pessoasService, extratorID) {
             var listaNovosAmigos = response._embedded.pessoa;
 
             $scope.listaNovosAmigos = _.filter(listaNovosAmigos, function (item) {
-                if(_.findIndex($scope.listaPessoas, {"nomeCompleto": item.nomeCompleto}) === -1){
+                if(_.findIndex($scope.listaPessoas, {"nomeCompleto": item.nomeCompleto}) === -1
+                && item.nomeCompleto !== $scope.nomePessoa){
                     return item;
                 }
                 return null;

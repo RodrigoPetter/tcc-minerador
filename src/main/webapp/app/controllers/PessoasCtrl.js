@@ -11,6 +11,10 @@ function($scope, $window, pessoasService, extratorID) {
         $window.location.href = "#/amizades/"+pessoaId;
     }
 
+    $scope.resultadoMineracao = function (pessoaId) {
+        $window.location.href = "#/resultado-mineracao/"+pessoaId;
+    }
+
     $scope.incluir = function () {
         dadoFormatado = {
             "nomeCompleto": $scope.incluirNome,

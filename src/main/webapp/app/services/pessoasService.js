@@ -12,11 +12,19 @@ angular.module('app')
                     method:'GET',
                     url: '/pessoa/addAmizade',
                 },
+            getById:
+                {
+                    method:'GET',
+                    url: '/pessoa/:pessoaId',
+                }
         });
 
     var service = {
         getPessoas: function () {
             return resource.get().$promise;
+        },
+        getPessoa: function (pessoaId) {
+            return resource.getById({"pessoaId": pessoaId}).$promise;
         },
         getAmizades: function (pessoaId) {
             return resource.getAmizades({"pessoaId": pessoaId}).$promise;

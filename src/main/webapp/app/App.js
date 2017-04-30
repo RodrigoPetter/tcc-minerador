@@ -22,5 +22,9 @@ angular.module('app',['ngRoute', 'ngResource', 'naif.base64'])
             templateUrl : 'partials/pessoas/amizades.html',
             controller     : 'AmizadesCtrl',
         })
+        .when('/resultado-mineracao/:pessoaId?', {
+            templateUrl : 'partials/pessoas/resultadoMineracao.html',
+            controller     : 'ResultadoMineracaoCtrl',
+        })
         .otherwise ({ redirectTo: '/' });
 });
