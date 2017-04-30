@@ -18,5 +18,9 @@ angular.module('app',['ngRoute', 'ngResource', 'naif.base64'])
             templateUrl : 'partials/config.html',
             controller     : 'ConfigCtrl',
         })
+        .when('/amizades/:pessoaId?', {
+            templateUrl : 'partials/pessoas/amizades.html',
+            controller     : 'AmizadesCtrl',
+        })
         .otherwise ({ redirectTo: '/' });
 });

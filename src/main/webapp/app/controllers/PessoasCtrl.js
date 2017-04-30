@@ -1,10 +1,15 @@
 angular.module('app')
-.controller('PessoasCtrl', ["$scope", "pessoasService", "extratorID", function($scope, pessoasService, extratorID) {
+.controller('PessoasCtrl', ["$scope", "$window", "pessoasService", "extratorID",
+function($scope, $window, pessoasService, extratorID) {
 
     $scope.extrairID = extratorID.extrair;
     $scope.mensagem = "";
     $scope.incluirNome = "";
     atualizarTela();
+
+    $scope.amizades = function (pessoaId) {
+        $window.location.href = "#/amizades/"+pessoaId;
+    }
 
     $scope.incluir = function () {
         dadoFormatado = {
@@ -20,7 +25,7 @@ angular.module('app')
             $scope.mensagem = "Erro ao incluir a pessoa. Mais detalhes no console.";
             console.log(erro);
         });
-    }
+    };
 
     function atualizarTela(){
         pessoasService.getPessoas().then(function (response) {

@@ -1,13 +1,15 @@
 <div class="page-header">
-    <h1>Lista de pessoas</h1>
+    <h1>Liste de amigos de {{nomePessoa}}</h1>
 </div>
 <div class="container-fluid">
     <div class="row">
         <div class="form-group col-md-3">
-            <label>Incluir nova pessoa</label>
-            <input type="text" class="form-control" placeholder="Nome completo" ng-model="incluirNome">
+            <select name="repeatSelect" id="repeatSelect" ng-model="data.novaAmizadeId">
+                <option value="">---Incluir nova amizade---</option>
+                <option ng-repeat="pessoa in listaNovosAmigos track by pessoa._links.self.href" value="{{extrairID(pessoa)}}">{{pessoa.nomeCompleto}}</option>
+            </select>
         </div>
-        <button type="submit" class="btn btn-default" ng-click="incluir()">Incluir</button>
+        <button type="submit" class="btn btn-default" ng-click="addAmizade()">Incluir</button>
         <span ng-bind="mensagem"></span>
     </div>
     <div class="row">
@@ -20,10 +22,9 @@
                     Nome Completo
                 </th>
                 <th></th>
-                <th></th>
             </thead>
             <tbody>
-                <tr ng-repeat="pessoa in listaPessoas">
+                <tr ng-repeat="pessoa in listaPessoas track by pessoa._links.self.href">
                     <td>
                         <span ng-bind="extrairID(pessoa)"></span>
                     </td>
@@ -32,9 +33,6 @@
                     </td>
                     <td>
                         <button type="submit" class="btn btn-default" ng-click="amizades(extrairID(pessoa))">Amizades</button>
-                    </td>
-                    <td>
-                        <button type="submit" class="btn btn-default" ng-click="mineracao(extrairID(pessoa))">Resultado Mineração</button>
                     </td>
                 </tr>
             </tbody>

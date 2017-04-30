@@ -126,6 +126,7 @@ class Minerador {
         return "Relacionamento salvo com sucesso."
 
     }
+
     @RequestMapping(value="testar", method=RequestMethod.GET)
     String testar(){
 

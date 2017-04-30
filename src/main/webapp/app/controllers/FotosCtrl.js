@@ -15,7 +15,7 @@ angular.module('app')
         dadoFormatado = {
             imagem: $scope.data.imagem.base64,
             analisada: false,
-            owner: $scope.listaPessoas[$scope.data.owner]._links.self.href
+            owner: $scope.data.owner
         }
         console.log("dadoFormatado:");
         console.log(dadoFormatado);
