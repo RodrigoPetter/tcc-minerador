@@ -2,8 +2,8 @@
     <h1>Resultado da mineração de [{{totalFotos}} fotos] de {{nomePessoa}} </h1>
 </div>
 <div class="container-fluid">
-    <h2>Amigos que mais aparecem em suas fotos</h2>
     <div class="col-md-6">
+        <h2>Pessoas que mais aparecem em suas fotos</h2>
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <th>Nome amigo</th>
@@ -22,6 +22,35 @@
                         <span ng-bind="pessoa.total"></span>
                     </td>
                 </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h2>Aparecem em suas fotos mas não são amigos</h2>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <th>Nome</th>
+            <th>Aparece em %</th>
+            <th>Aparições</th>
+            <th></th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="pessoa in listaAparicoes">
+                <td>
+                    <span ng-bind="pessoa.nomeCompleto"></span>
+                </td>
+                <td>
+                    <span ng-bind="pessoa.percentual"></span>%
+                </td>
+                <td>
+                    <span ng-bind="pessoa.total"></span>
+                </td>
+                <td>
+                    <button type="submit"
+                            class="btn btn-default"
+                            ng-click="">Começar amizade</button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

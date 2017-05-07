@@ -20,7 +20,7 @@
         </button>
         <div class="well well-lg" ng-if="foto.resultadoAnalise">
             <b><p>Pessoas identificadas</p></b>
-            <p ng-repeat="resultado in foto.resultadoAnalise">{{resultado.Prediction}}: {{resultado.confidence}}</p>
+            <p ng-repeat="resultado in foto.resultadoAnalise">{{resultado.Prediction}}: {{resultado.confidence | percentage:2}}</p>
         </div>
     </div>
 </div>
