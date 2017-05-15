@@ -98,6 +98,11 @@ class Minerador {
             c.setArquivo(DatatypeConverter.parseBase64Binary(object.result.get(3).arquivo))
             CR.save(c)
 
+            c = new Classifier()
+            c.setNome(object.result.get(4).nome)
+            c.setArquivo(DatatypeConverter.parseBase64Binary(object.result.get(4).arquivo))
+            CR.save(c)
+
             System.out.println("Treinamento concluído.")
 
             return "Treinamento concluído."

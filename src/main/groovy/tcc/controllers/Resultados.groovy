@@ -36,7 +36,7 @@ class Resultados {
 
         Pessoa pessoa = PR.findById(pessoaId)
 
-        List<Aparicao> aparicoes = resultadosServices.getAparicoesAmigos(pessoa)
+        List<Aparicao> aparicoes = resultadosServices.getAparicoes(pessoa)
 
         aparicoes = resultadosServices.calcularPercentual(pessoa, aparicoes)
 

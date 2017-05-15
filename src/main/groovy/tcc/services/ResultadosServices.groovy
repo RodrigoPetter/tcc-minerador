@@ -16,7 +16,7 @@ class ResultadosServices {
 
     }
 
-    List<Aparicao> getAparicoesAmigos(Pessoa pessoa){
+    List<Aparicao> getAparicoes(Pessoa pessoa){
 
         List<Aparicao> aparicoesTotal = new ArrayList<Aparicao>()
 
@@ -24,7 +24,11 @@ class ResultadosServices {
 
         pessoa.fotos.each { pessoasFoto ->
 
-            pessoasFoto.compostaPor.removeIf{it.nomeCompleto == pessoa.nomeCompleto || !pessoa.amizades.contains(it)}
+            //Remove pessoas que não estão na lista de amizades
+            //pessoasFoto.compostaPor.removeIf{it.nomeCompleto == pessoa.nomeCompleto || !pessoa.amizades.contains(it)}
+
+            //remove a pessoa dona da analise
+            pessoasFoto.compostaPor.remove(pessoa)
 
             pessoasFoto.compostaPor.each { pessoaFoto ->
 
@@ -37,6 +41,7 @@ class ResultadosServices {
                     aparicao.total += 1
                 }else{
                     aparicao = new Aparicao(nomeCompleto: pessoaFoto.nomeCompleto)
+                    aparicao.isAmigo = pessoa.amizades.contains(pessoaFoto)
                     aparicao.total = 1
                     aparicoesTotal.add(aparicao)
                 }
