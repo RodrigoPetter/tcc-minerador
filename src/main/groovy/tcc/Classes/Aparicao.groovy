@@ -10,5 +10,7 @@ class Aparicao {
     Boolean isAmigo
     Integer total
     Integer percentual
+    Integer id
     String nomeCompleto
+
 }

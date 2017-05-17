@@ -42,6 +42,7 @@ class ResultadosServices {
                 }else{
                     aparicao = new Aparicao(nomeCompleto: pessoaFoto.nomeCompleto)
                     aparicao.isAmigo = pessoa.amizades.contains(pessoaFoto)
+                    aparicao.id = pessoaFoto.id
                     aparicao.total = 1
                     aparicoesTotal.add(aparicao)
                 }

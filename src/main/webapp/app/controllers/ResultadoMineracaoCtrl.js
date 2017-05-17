@@ -9,6 +9,13 @@ function($scope, $routeParams, pessoasService, resultadosService, extratorID) {
         atualizarTela();
     });
 
+    $scope.addAmizade = function (pessoaIdNovaAmizade) {
+        pessoasService.addAmizade($scope.pessoaId, pessoaIdNovaAmizade).then(function (response) {
+            console.log(response);
+            atualizarTela();
+        });
+    };
+
     function atualizarTela(){
         resultadosService.getTotalFotos($scope.pessoaId).then(function (response) {
             console.log(response);
