@@ -1,22 +1,24 @@
 angular.module('app')
-.controller('MineradorCtrl', ["$scope", "fotosService", "mineradorService",
+.controller('MineradorCtrl', ["$scope", "facebookService", "mineradorService",
     "extratorID", "classifierService",
-    function($scope, fotosService, mineradorService, extratorID, classifierService) {
+    function($scope, facebookService, mineradorService, extratorID, classifierService) {
 
     $scope.data = {};
     $scope.extrairID = extratorID.extrair;
+    $scope.albumSelecionado = false;
 
     atualizarTela();
     
-    $scope.analisar = function (id) {
-        mineradorService.identificar(id, $scope.selectedClassifier).then(function (response) {
-            $scope.listaFotos.map(function (item, index, array) {
-                if($scope.extrairID(item) === id){
-                    array[index].resultadoAnalise = response.result;
-                }
-            });
+    $scope.analisar = function (albumId, albumName) {
+        $scope.albumName = albumName;
+        $scope.albumSelecionado = true;
 
+        //busca todas as fotos do album selecionado
+        facebookService.getAlbumPhotos(albumId).then(function (response) {
+            console.log(response);
+            $scope.albumPhotos = response;
         });
+
     }
 
     $scope.salvarResultado = function (foto, resultadoAnalise) {
@@ -28,9 +30,19 @@ angular.module('app')
     }
 
     function atualizarTela(){
-        fotosService.getFotosAnalise().then(function (response) {
-            $scope.listaFotos = response._embedded.foto;
-            console.log($scope.listaFotos);
+        facebookService.getData().then(function (response) {
+           $scope.profileData = response;
+           console.log(response);
+        });
+
+        facebookService.getProfilePhoto().then(function (response) {
+            console.log(response);
+            $scope.profilePhoto = response.photo;
+        });
+
+        facebookService.getAlbums().then(function (response) {
+            $scope.listaAlbums = response;
+            console.log($scope.listaAlbums);
         });
 
         classifierService.getClassifiers().then(function (response) {

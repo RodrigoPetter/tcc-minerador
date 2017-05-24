@@ -1,5 +1,6 @@
 package tcc.controllers.facebook
 
+import groovy.json.JsonOutput
 import org.springframework.social.connect.UsersConnectionRepository
 import org.springframework.social.facebook.api.Facebook
 import org.springframework.social.facebook.api.ImageType
@@ -19,31 +20,31 @@ class Extrator {
         this.usersConnectionRepository = usersConnectionRepository
     }
 
-    @RequestMapping("/perfil/dados")
+    @RequestMapping("/profile/data")
     Object getuser(){
-        usersConnectionRepository.findUserIdsWithConnection()
         String [] fields = [ "id", "age_range", "email", "first_name", "last_name", "link"]
         User userProfile = facebook.fetchObject("me", User.class, fields)
         facebook.userOperations().getUserProfileImage()
         return userProfile
     }
 
-    @RequestMapping("/perfil/foto")
-    Object getFoto(){
-        return facebook.userOperations().getUserProfileImage(ImageType.LARGE)
+    @RequestMapping("/profile/photo")
+    String getFoto(){
+        byte[] photo = facebook.userOperations().getUserProfileImage(ImageType.LARGE)
+        return JsonOutput.toJson([photo:photo.encodeBase64().toString()])
     }
 
-    @RequestMapping("/perfil/albums")
+    @RequestMapping("/profile/albums")
     Object getAlbums(){
         return facebook.mediaOperations().getAlbums()
     }
 
-    @RequestMapping("/perfil/photos")
+    @RequestMapping("/albums/photos")
     Object getPhotos(@RequestParam("album-id") String albumId){
         return facebook.mediaOperations().getPhotos(albumId)
     }
 
-    @RequestMapping("/perfil/friends")
+    @RequestMapping("/profile/friends")
     Object getFriends(){
         return facebook.friendOperations().getFriendIds()
     }

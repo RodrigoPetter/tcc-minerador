@@ -18,6 +18,10 @@ angular.module('app',['ngRoute', 'ngResource', 'naif.base64'])
             templateUrl : 'partials/config.html',
             controller     : 'ConfigCtrl',
         })
+        .when('/desconectar-facebook', {
+            templateUrl : 'partials/desconectar.html',
+            controller     : 'DesconectarFacebookCtrl',
+        })
         .when('/amizades/:pessoaId?', {
             templateUrl : 'partials/pessoas/amizades.html',
             controller     : 'AmizadesCtrl',
