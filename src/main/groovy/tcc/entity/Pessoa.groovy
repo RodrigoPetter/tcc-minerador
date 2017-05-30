@@ -25,6 +25,8 @@ class Pessoa implements Serializable{
     @GeneratedValue(strategy=GenerationType.AUTO)
     Long id
 
+    String facebookId
+
     @Column(nullable = false, unique = true)
     @NotNull
     String nomeCompleto

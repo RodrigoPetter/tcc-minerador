@@ -13,6 +13,8 @@ import tcc.entity.Pessoa
 interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
     Pessoa findByNomeCompleto(@Param("name") String nomeCompleto)
+    Pessoa findByNomeCompletoLikeIgnoreCase(@Param("name") String nomeCompleto)
     Pessoa findById(@Param("id") Long id)
+    Pessoa findByFacebookId(@Param("id") String id)
 
 }

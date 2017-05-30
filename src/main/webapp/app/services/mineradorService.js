@@ -14,8 +14,8 @@ angular.module('app')
                 }
         });
     var service = {
-        identificar: function (fotoId, classifierId) {
-            return resource.get({"foto-id": fotoId, "classifier-id":classifierId}).$promise;
+        identificar: function (perfil, album, foto, classifierId) {
+            return resource.get({"profile-id":perfil, "album-id":album, "foto-id": foto, "classifier-id":classifierId}).$promise;
         },
         gerarClassifiers: function () {
             return resource.gerarTreinamentos().$promise;

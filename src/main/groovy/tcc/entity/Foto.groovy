@@ -26,9 +26,9 @@ class Foto implements Serializable{
     @Column(length = 20971520)
     byte[] imagem
 
-    String facebookAlbum
+    String facebookAlbumId
 
-    String facebookID
+    String facebookId
 
     @Column(nullable = false)
     @NotNull

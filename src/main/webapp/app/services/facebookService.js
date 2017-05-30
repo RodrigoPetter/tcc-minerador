@@ -37,8 +37,12 @@ angular.module('app')
         getAlbums: function () {
             return resource.getAlbums().$promise;
         },
-        getAlbumPhotos: function (albumId) {
-            return resource.getAlbumPhotos({'album-id': albumId}).$promise;
+        getAlbumPhotos: function (albumId, limit) {
+            if(limit > 0) {
+                return resource.getAlbumPhotos({'album-id': albumId, 'limit': limit}).$promise;
+            }else{
+                return resource.getAlbumPhotos({'album-id': albumId}).$promise;
+            }
         }
     }
     return service;

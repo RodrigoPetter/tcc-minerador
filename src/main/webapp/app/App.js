@@ -1,5 +1,5 @@
 angular.module('app',['ngRoute', 'ngResource', 'naif.base64'])
-.config(function($routeProvider, $locationProvider)
+.config(function($routeProvider)
 {
     $routeProvider
         .when('/', {

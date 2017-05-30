@@ -1,4 +1,8 @@
-<div class="page-header">
+<iframe ng-src="/connect/facebook"
+        style="width: 100%"
+        ng-hide="isConnected()">
+</iframe>
+<div class="page-header" ng-show="isConnected()">
     <div class="row">
         <div class="col-md-6">
             <h1 ng-if="!albumSelecionado">Selecione um albúm para análise</h1>
@@ -14,47 +18,49 @@
         </div>
     </div>
 </div>
-<select name="repeatSelect" id="repeatSelect" ng-model="selectedClassifier" ng-if="!albumSelecionado">
+<select name="repeatSelect" id="repeatSelect" ng-model="selectedClassifier" ng-show="!albumSelecionado && isConnected()">
     <option value="">---Selecione um classificador---</option>
     <option ng-repeat="classifier in listaClassifier" value="{{extrairID(classifier)}}">{{classifier.nome}}</option>
 </select>
 <div class="panel panel-default"
      ng-repeat="album in listaAlbums"
-     ng-if="!albumSelecionado">
+     ng-if="!albumSelecionado && isConnected()">
     <div class="panel-body">
-        <img style="max-width: 250px" data-ng-src="data:image/png;base64,{{foto.imagem}}"/>
-        <span>{{album.name}}</span>
-        <button type="submit"
-                class="btn btn-default"
-                ng-click="analisar(album.id, album.name)">Analisar</button>
-        <button type="submit"
-                class="btn btn-default"
-                ng-if="foto.resultadoAnalise"
-                ng-click="salvarResultado(extrairID(foto), foto.resultadoAnalise)">
-            Salvar resultado
-        </button>
-        <div class="well well-lg" ng-if="foto.resultadoAnalise">
-            <b><p>Pessoas identificadas</p></b>
-            <p ng-repeat="resultado in foto.resultadoAnalise">{{resultado.Prediction}}: {{resultado.confidence | percentage:2}}</p>
+        <div class="row">
+            <h2>Álbum {{album.name}}</h2>
+            <button type="submit"
+                    class="btn btn-default"
+                    ng-click="analisar(album.id, album.name)">Analisar as fotos deste álbum</button>
+        </div>
+        <div class="row" style="padding-top: 15px">
+            <span>Amostra das imagens deste álbum:</span>
+        </div>
+        <div class="row" style="padding-top: 15px">
+            <div class="col-lg-1"
+                 ng-repeat="photo in album.preview">
+                <img style="max-width: 250px" ng-src="{{photo.picture}}"/>
+            </div>
         </div>
     </div>
 </div>
 <div class="panel panel-default"
      ng-repeat="photos in albumPhotos"
-     ng-if="albumSelecionado">
+     ng-if="albumSelecionado && isConnected()">
     <div class="panel-body">
         <img style="max-width: 250px" ng-src="{{photos.source}}"/>
         <span>{{photos.name}}</span>
-        <span ng-if="!foto.resultadoAnalise"><b>Aguarde! Foto sendo processada...</b></span>
         <button type="submit"
                 class="btn btn-default"
-                ng-if="foto.resultadoAnalise"
-                ng-click="salvarResultado(extrairID(foto), foto.resultadoAnalise)">
+                ng-if="photos.resultadoAnalise"
+                ng-click="salvarResultado(extrairID(photos), photos.resultadoAnalise)">
             Salvar resultado
         </button>
-        <div class="well well-lg" ng-if="foto.resultadoAnalise">
+        <div class="well well-lg" ng-if="!photos.resultadoAnalise">
+            <span><b>Aguarde! Foto sendo processada...</b></span>
+        </div>
+        <div class="well well-lg" ng-if="photos.resultadoAnalise">
             <b><p>Pessoas identificadas</p></b>
-            <p ng-repeat="resultado in foto.resultadoAnalise">{{resultado.Prediction}}: {{resultado.confidence | percentage:2}}</p>
+            <p ng-repeat="resultado in photos.resultadoAnalise">{{resultado.Prediction}}: {{resultado.confidence | percentage:2}}</p>
         </div>
     </div>
 </div>

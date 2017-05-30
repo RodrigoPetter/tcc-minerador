@@ -1,5 +1,7 @@
 package tcc.controllers
 
+import org.springframework.social.facebook.api.Photo
+import tcc.controllers.facebook.Extrator
 import tcc.entity.Pessoa
 
 import javax.xml.bind.DatatypeConverter
@@ -27,11 +29,16 @@ class Minerador {
     private FotoRepository FR
     @Autowired
     private ClassifierRepository CR
+    @Autowired
+    private Extrator extrator
     private URL url = new URL("http://192.168.0.16:8081/RPC2")
     private XmlRpcClient client = new XmlRpcClient()
 
     @RequestMapping(method=RequestMethod.GET)
-    Object processarImagem(@RequestParam("foto-id") Long id, @RequestParam("classifier-id") Long classifierId){
+    Object processarImagem(@RequestParam("profile-id") String profileId,
+                           @RequestParam("album-id") String albumId,
+                           @RequestParam("foto-id") String facebookPhotoID,
+                           @RequestParam("classifier-id") Long classifierId){
         try {
             XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl()
             config.setServerURL(url)
@@ -39,11 +46,13 @@ class Minerador {
             client.setConfig(config)
 
             Classifier c = CR.findById(classifierId)
-            Foto f = FR.findById(id)
+
+            byte[] image = extrator.getSinglePhotoImage(facebookPhotoID)
+
 
             Vector params = new Vector()
-            params.addElement(Base64.encoder.encodeToString(c.arquivo))
-            params.addElement(Base64.encoder.encodeToString(f.imagem))
+            params.addElement(c.arquivo.encodeBase64().toString())
+            params.addElement(image.encodeBase64().toString())
 
             String result = client.execute("descobrir", params)
             result = result.replace(",]", "]")
@@ -53,7 +62,7 @@ class Minerador {
             return result
         } catch (Exception exception) {
             System.err.println("JavaClient: " + exception)
-            return "Erro ao chamar servidor rpc do openface: "+exception
+            return "{'erro': Erro ao chamar servidor rpc do openface: "+exception+"}"
         }
     }
 

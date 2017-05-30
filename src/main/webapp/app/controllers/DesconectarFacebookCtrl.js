@@ -1,8 +1,8 @@
 angular.module('app')
-.controller('DesconectarFacebookCtrl', ["$resource",
-function($resource) {
+.controller('DesconectarFacebookCtrl', ["$resource", "$location",
+function($resource, $location) {
 
-    var resource = $resource("/perfil/", null,
+    var resource = $resource("/connect/facebook", null,
         {
             desconectar: {
                 method: 'DELETE',
@@ -10,11 +10,12 @@ function($resource) {
             }
         });
 
-    console.log('desconectar1');
     resource.desconectar().$promise.then(function (response) {
-        console.log('desconectar2');
-        console.log(response)
+        console.log(response);
+        $location.url("/");
+    }).catch(function (response) {
+        console.log(response);
+        $location.url("/");
     });
-    console.log('desconectar3');
 
 }]);

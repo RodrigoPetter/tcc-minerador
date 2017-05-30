@@ -8,18 +8,37 @@ angular.module('app')
     $scope.albumSelecionado = false;
 
     atualizarTela();
-    
+
+    $scope.isConnected = function () {
+        return $scope.profileData !== undefined;
+    };
+
     $scope.analisar = function (albumId, albumName) {
         $scope.albumName = albumName;
         $scope.albumSelecionado = true;
 
         //busca todas as fotos do album selecionado
-        facebookService.getAlbumPhotos(albumId).then(function (response) {
+        facebookService.getAlbumPhotos(albumId, null).then(function (response) {
             console.log(response);
             $scope.albumPhotos = response;
+
+            //envia para processamento
+            angular.forEach($scope.albumPhotos, function (foto, key) {
+                var album = foto.album.id;
+                var fotoId = foto.id;
+                var perfil = $scope.profileData.id;
+
+                console.log("vai processar foto ID: "+foto.id);
+
+                mineradorService.identificar(perfil, album, fotoId, $scope.selectedClassifier).then(function (response) {
+                    console.log("resultado: ");
+                    $scope.albumPhotos[key].resultadoAnalise = response.result;
+                    console.log($scope.albumPhotos[key]);
+                });
+            });
         });
 
-    }
+    };
 
     $scope.salvarResultado = function (foto, resultadoAnalise) {
         resultadoAnalise.forEach(function (item) {
@@ -27,7 +46,7 @@ angular.module('app')
                 atualizarTela();
             })
         })
-    }
+    };
 
     function atualizarTela(){
         facebookService.getData().then(function (response) {
@@ -43,6 +62,14 @@ angular.module('app')
         facebookService.getAlbums().then(function (response) {
             $scope.listaAlbums = response;
             console.log($scope.listaAlbums);
+
+            angular.forEach($scope.listaAlbums, function (album, key) {
+                facebookService.getAlbumPhotos(album.id, 10).then(function (photosAlbum) {
+                    console.log(photosAlbum);
+                    album.preview = photosAlbum;
+                });
+            });
+
         });
 
         classifierService.getClassifiers().then(function (response) {
