@@ -24,12 +24,6 @@ class ResultadosServices {
 
         pessoa.fotos.each { pessoasFoto ->
 
-            //Remove pessoas que não estão na lista de amizades
-            //pessoasFoto.compostaPor.removeIf{it.nomeCompleto == pessoa.nomeCompleto || !pessoa.amizades.contains(it)}
-
-            //remove a pessoa dona da analise
-            pessoasFoto.compostaPor.remove(pessoa)
-
             pessoasFoto.compostaPor.each { pessoaFoto ->
 
                 Aparicao aparicao = aparicoesTotal.find {it.nomeCompleto == pessoaFoto.nomeCompleto}
@@ -41,7 +35,6 @@ class ResultadosServices {
                     aparicao.total += 1
                 }else{
                     aparicao = new Aparicao(nomeCompleto: pessoaFoto.nomeCompleto)
-                    aparicao.isAmigo = pessoa.amizades.contains(pessoaFoto)
                     aparicao.id = pessoaFoto.id
                     aparicao.total = 1
                     aparicoesTotal.add(aparicao)
