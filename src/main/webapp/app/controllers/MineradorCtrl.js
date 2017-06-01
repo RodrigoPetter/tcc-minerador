@@ -31,8 +31,10 @@ angular.module('app')
                 console.log("vai processar foto ID: "+foto.id);
 
                 mineradorService.identificar(perfil, album, fotoId, $scope.selectedClassifier).then(function (response) {
-                    console.log("resultado: ");
+                    console.log("response: ");
+                    console.log(response);
                     $scope.albumPhotos[key].resultadoAnalise = response.result;
+                    $scope.albumPhotos[key].isAnalisada = response.isAnalisada;
                     console.log($scope.albumPhotos[key]);
                 });
             });
@@ -40,9 +42,10 @@ angular.module('app')
 
     };
 
-    $scope.salvarResultado = function (foto, resultadoAnalise) {
+    $scope.salvarResultado = function (fotoid, resultadoAnalise) {
         resultadoAnalise.forEach(function (item) {
-            mineradorService.salvarResultado(foto, item.Prediction).then(function (response) {
+            mineradorService.salvarResultado(fotoid, item.Prediction).then(function (response) {
+                resultadoAnalise.saveResult = response.message;
                 atualizarTela();
             })
         })

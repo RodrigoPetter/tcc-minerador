@@ -33,6 +33,7 @@ class Minerador {
     private Extrator extrator
     private URL url = new URL("http://192.168.0.16:8081/RPC2")
     private XmlRpcClient client = new XmlRpcClient()
+    private JsonSlurper jsonSlurper = new JsonSlurper()
 
     @RequestMapping(method=RequestMethod.GET)
     Object processarImagem(@RequestParam("profile-id") String profileId,
@@ -49,7 +50,6 @@ class Minerador {
 
             byte[] image = extrator.getSinglePhotoImage(facebookPhotoID)
 
-
             Vector params = new Vector()
             params.addElement(c.arquivo.encodeBase64().toString())
             params.addElement(image.encodeBase64().toString())
@@ -57,9 +57,19 @@ class Minerador {
             String result = client.execute("descobrir", params)
             result = result.replace(",]", "]")
 
-            System.out.println("Resultado: "+ result)
+            def json = jsonSlurper.parseText(result)
 
-            return result
+            //após processamento, salva o registro da foto no banco se nao existir
+            if(Objects.isNull(FR.findByFacebookId(facebookPhotoID))) {
+                json.isAnalisada = false
+                Pessoa pessoa = PR.findByFacebookId(profileId)
+                Foto foto = new Foto(facebookAlbumId: albumId, facebookId: facebookPhotoID, owner: pessoa, analisada: false)
+                FR.save(foto)
+            }else{
+                json.isAnalisada = true
+            }
+
+            return json
         } catch (Exception exception) {
             System.err.println("JavaClient: " + exception)
             return "{'erro': Erro ao chamar servidor rpc do openface: "+exception+"}"
@@ -123,13 +133,20 @@ class Minerador {
     }
 
     @RequestMapping(value="salvarResultado", method=RequestMethod.GET)
-    String salvarResultado(@RequestParam("foto-id") Long fotoId, @RequestParam("pessoa-nome") String pessoaNome){
+    Object salvarResultado(@RequestParam("foto-id") String facebookPhotoID,
+                           @RequestParam("pessoa-nome") String pessoaNome){
 
-        Pessoa p = PR.findByNomeCompleto(pessoaNome)
+        pessoaNome = "%"+pessoaNome+"%"
 
-        println("Pessoa encontrada: "+p.nomeCompleto)
+        Pessoa p = PR.findByNomeCompletoLikeIgnoreCase(pessoaNome)
+        if(Objects.isNull(p)){
+            return '{"message":"Erro: Pessoa '+pessoaNome+' não está cadastrada."}'
+        }
 
-        Foto f = FR.findById(fotoId)
+        Foto f = FR.findByFacebookId(facebookPhotoID)
+        if(Objects.isNull(f)){
+            return '{"message":"Erro: Foto id '+facebookPhotoID+' não encontrada."}'
+        }
 
         p.apareceEm.add(f)
         f.analisada = true
@@ -137,7 +154,7 @@ class Minerador {
         PR.save(p)
         FR.save(f)
 
-        return "Relacionamento salvo com sucesso."
+        return '{"message":"Informações salvas com sucesso!"}'
 
     }
 

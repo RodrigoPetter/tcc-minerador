@@ -13,5 +13,5 @@ interface FotoRepository extends JpaRepository<Foto, Long> {
 
     Foto findById(@Param("id") Long id)
     List<Foto> findByAnalisada(@Param("analisada") boolean analisada)
-    Foto findByFacebookId(@Param("id") Long id)
+    Foto findByFacebookId(@Param("id") String id)
 }

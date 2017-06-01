@@ -51,10 +51,12 @@
         <span>{{photos.name}}</span>
         <button type="submit"
                 class="btn btn-default"
-                ng-if="photos.resultadoAnalise"
-                ng-click="salvarResultado(extrairID(photos), photos.resultadoAnalise)">
+                ng-if="!photos.resultadoAnalise.isAnalisada && (photos.resultadoAnalise && !photos.resultadoAnalise.saveResult)"
+                ng-click="salvarResultado(photos.id, photos.resultadoAnalise)">
             Salvar resultado
         </button>
+        <span ng-if="photos.resultadoAnalise.isAnalisada">Esta imagem já foi analisada anteriormente e já está salva na base de dados.</span>
+        <span>{{photos.resultadoAnalise.saveResult}}</span>
         <div class="well well-lg" ng-if="!photos.resultadoAnalise">
             <span><b>Aguarde! Foto sendo processada...</b></span>
         </div>
