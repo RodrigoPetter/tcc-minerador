@@ -31,20 +31,6 @@ class Pessoa implements Serializable{
     @NotNull
     String nomeCompleto
 
-    @ManyToMany
-    @JoinTable(name="amizades",
-            joinColumns=@JoinColumn(name="pessoaId"),
-            inverseJoinColumns=@JoinColumn(name="amigoId")
-    )
-    List<Pessoa> amizades
-
-    @ManyToMany
-    @JoinTable(name="amizades",
-            joinColumns=@JoinColumn(name="amigoId"),
-            inverseJoinColumns=@JoinColumn(name="pessoaId")
-    )
-    List<Pessoa> amigoDe
-
     @OneToMany
     @JoinColumn(name="owner")
     List<Foto> fotos
