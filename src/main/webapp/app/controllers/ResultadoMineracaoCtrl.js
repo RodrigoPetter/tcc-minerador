@@ -10,10 +10,7 @@ function($scope, $routeParams, pessoasService, resultadosService, extratorID) {
     });
 
     $scope.addAmizade = function (pessoaIdNovaAmizade) {
-        pessoasService.addAmizade($scope.pessoaId, pessoaIdNovaAmizade).then(function (response) {
-            console.log(response);
-            atualizarTela();
-        });
+        alert("função não implementada");
     };
 
     function atualizarTela(){
@@ -24,7 +21,20 @@ function($scope, $routeParams, pessoasService, resultadosService, extratorID) {
 
         resultadosService.getAparicoes($scope.pessoaId).then(function (response) {
             console.log(response);
-            $scope.listaAparicoes = response
+            $scope.listaAparicoes = response;
+
+            var a = [];
+
+            angular.forEach(response, function (element) {
+                a.push(element);
+            });
+
+            a = JSON.stringify(a);
+            console.log("vai enviar:");
+            console.log(a);
+            resultadosService.getAnaliseCondicional($scope.pessoaId, a).then(function () {
+               console.log("ENVIADO!");
+            });
         });
     }
 

@@ -35,10 +35,6 @@ class Pessoa implements Serializable{
     @JoinColumn(name="owner")
     List<Foto> fotos
 
-    @ManyToMany
-    @JoinTable(name="fotos_pessoas",
-            joinColumns=@JoinColumn(name="pessoa_id"),
-            inverseJoinColumns=@JoinColumn(name="foto_id")
-    )
+    @ManyToMany(mappedBy="compostaPor")
     List<Foto> apareceEm
 }

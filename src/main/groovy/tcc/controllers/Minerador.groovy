@@ -60,13 +60,14 @@ class Minerador {
             def json = jsonSlurper.parseText(result)
 
             //após processamento, salva o registro da foto no banco se nao existir
-            if(Objects.isNull(FR.findByFacebookId(facebookPhotoID))) {
+            Foto foto = FR.findByFacebookId(facebookPhotoID)
+            if(Objects.isNull(foto)) {
                 json.isAnalisada = false
                 Pessoa pessoa = PR.findByFacebookId(profileId)
-                Foto foto = new Foto(facebookAlbumId: albumId, facebookId: facebookPhotoID, owner: pessoa, analisada: false)
+                foto = new Foto(facebookAlbumId: albumId, facebookId: facebookPhotoID, owner: pessoa, analisada: false)
                 FR.save(foto)
             }else{
-                json.isAnalisada = true
+                json.isAnalisada = foto.analisada
             }
 
             return json
@@ -148,10 +149,9 @@ class Minerador {
             return '{"message":"Erro: Foto id '+facebookPhotoID+' não encontrada."}'
         }
 
-        p.apareceEm.add(f)
+        f.compostaPor.add(p)
         f.analisada = true
 
-        PR.save(p)
         FR.save(f)
 
         return '{"message":"Informações salvas com sucesso!"}'
@@ -186,4 +186,9 @@ class Minerador {
 
     }
 
+    @RequestMapping(value="apagar-base", method = RequestMethod.DELETE)
+    Object apagarBase(){
+        FR.deleteAll()
+        return '{"message": "Dados Apagados."}'
+    }
 }

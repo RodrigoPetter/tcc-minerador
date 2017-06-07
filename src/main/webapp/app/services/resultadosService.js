@@ -13,6 +13,12 @@ angular.module('app')
                     method:'GET',
                     url: '/resultados/:pessoaId/total-fotos',
                     isArray: false
+                },
+            getAnaliseCondicional:
+                {
+                    method:'POST',
+                    url: '/resultados/:pessoaId/condicional',
+                    isArray: false
                 }
         });
 
@@ -22,6 +28,9 @@ angular.module('app')
         },
         getTotalFotos: function (pessoaId) {
             return resource.getTotalFotos({"pessoaId": pessoaId}).$promise;
+        },
+        getAnaliseCondicional: function (pessoaId, listAparicoes) {
+            return resource.getAnaliseCondicional({"pessoaId": pessoaId}, listAparicoes).$promise;
         }
     };
     return service;

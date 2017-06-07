@@ -14,9 +14,6 @@ angular.module('app')
         getFotos: function () {
             return resource.get().$promise;
         },
-        save: function (dadoFormatado) {
-            return resource.save(dadoFormatado).$promise;
-        },
         getFotosAnalise: function () {
             return resource.getFotosAnalise({"analisada": false}).$promise;
         }

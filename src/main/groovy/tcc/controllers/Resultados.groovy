@@ -5,6 +5,7 @@ import org.apache.xmlrpc.client.XmlRpcClient
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
@@ -31,6 +32,14 @@ class Resultados {
     @Autowired
     private ResultadosServices resultadosServices
 
+    @RequestMapping(value="/{pessoaId}/total-fotos", method=RequestMethod.GET)
+    Integer getTotalFotos(@PathVariable Long pessoaId){
+
+        Pessoa pessoa = PR.findById(pessoaId)
+
+        return resultadosServices.getTotalFotos(pessoa)
+    }
+
     @RequestMapping(value="/{pessoaId}/aparicoes", method=RequestMethod.GET)
     List<Aparicao> getResultados(@PathVariable Long pessoaId){
 
@@ -43,11 +52,12 @@ class Resultados {
         return aparicoes
     }
 
-    @RequestMapping(value="/{pessoaId}/total-fotos", method=RequestMethod.GET)
-    Integer getTotalFotos(@PathVariable Long pessoaId){
+    @RequestMapping(value="/{pessoaId}/condicional", method=RequestMethod.POST)
+    Object getAnaliseCondicional(@PathVariable Long pessoaId,
+                                 @RequestBody List<Aparicao> listAparicoes){
+        Pessoa owner = PR.findById(pessoaId)
+        resultadosServices.getAnaliseCondicional(owner, listAparicoes)
 
-        Pessoa pessoa = PR.findById(pessoaId)
-
-        return resultadosServices.getTotalFotos(pessoa)
+        return null
     }
 }

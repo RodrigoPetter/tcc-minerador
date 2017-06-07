@@ -11,6 +11,11 @@ angular.module('app')
                 {
                     method:'GET',
                     url: '/minerador/salvarResultado',
+                },
+            apagarBase:
+                {
+                    method:'DELETE',
+                    url: '/minerador/apagar-base',
                 }
         });
     var service = {
@@ -23,6 +28,9 @@ angular.module('app')
         salvarResultado: function (fotoId, pessoaNome) {
             console.log("Vai salvar: "+fotoId+' - '+pessoaNome);
             return resource.salvarResultado({"foto-id": fotoId, "pessoa-nome": pessoaNome}).$promise;
+        },
+        apagarBase: function () {
+            return resource.apagarBase().$promise;
         }
     }
     return service;
