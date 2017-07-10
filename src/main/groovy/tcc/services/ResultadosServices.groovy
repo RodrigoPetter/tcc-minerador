@@ -2,12 +2,14 @@ package tcc.services
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import tcc.Classes.Aparicao
 import tcc.entity.Pessoa
 import tcc.repository.FotoRepository
 import tcc.repository.PessoaRepository
 
 import java.text.Format
+import java.util.stream.Collectors
 
 @Service
 class ResultadosServices {
@@ -17,12 +19,12 @@ class ResultadosServices {
     @Autowired
     private PessoaRepository pessoaRepository
 
+    @Transactional(readOnly=true)
     Integer getTotalFotos(Pessoa pessoa){
 
         println("antes: "+pessoa.fotos.size())
-        pessoa.fotos.removeIf{!it.analisada}
-        println("depois: "+pessoa.fotos.size())
-        return pessoa.fotos.size()
+        println("depois: "+pessoa.fotos.stream().filter{it.analisada}.collect(Collectors.toList()).size())
+        return pessoa.fotos.stream().filter{it.analisada}.collect(Collectors.toList()).size()
 
     }
 
@@ -71,7 +73,7 @@ class ResultadosServices {
 
     }
 
-    String getAnaliseCondicional(Pessoa owner, List<Aparicao> listAparicoes){
+    Object getAnaliseCondicional(Pessoa owner, List<Aparicao> listAparicoes){
 
         Integer totalFotos =  this.getTotalFotos(owner)
 
@@ -95,15 +97,20 @@ class ResultadosServices {
         Prob1 = Math.floor(PaIb*100)
 
         //calcula o condicional do Top 3
-        Pc = aparicaoPessoa3.total / totalFotos
-        PaUc = Pa*Pc
-        PbUc = Pb*Pc
-        PaUbUc = Pa*Pb*Pc
+        Pa = PaIb
+        Pb = aparicaoPessoa3.total / totalFotos
+        PaUb = Pa*Pb
+        PaIb = PaUb / Pb
+        Prob2 = Math.floor(PaIb*100)
 
 
-        println 'Se '+pessoa1.nomeCompleto+' aparecer, existe '+Prob1+'% de chance de'+pessoa2.nomeCompleto+' também aparecer na mesma foto.'
+        def mensagem1 = 'Se '+pessoa1.nomeCompleto+' aparecer, existe '+Prob1+'% de chance de '+pessoa2.nomeCompleto+' também aparecer na mesma foto.'
+        def mensagem2 = 'Se '+pessoa1.nomeCompleto+' e '+pessoa2.nomeCompleto+' aparecer, existe '+Prob2+'% de chance de '+pessoa3.nomeCompleto+' também aparecer na mesma foto.'
 
-        return null
+        println mensagem1
+        println mensagem2
+
+        return {["mensagem1":mensagem1, "mensagem2": mensagem2]}
     }
 
     Integer fotosConjuntas(Pessoa owner, Pessoa pessoa1, Pessoa pessoa2){

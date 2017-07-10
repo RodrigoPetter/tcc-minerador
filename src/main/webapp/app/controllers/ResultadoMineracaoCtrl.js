@@ -32,8 +32,10 @@ function($scope, $routeParams, pessoasService, resultadosService, extratorID) {
             a = JSON.stringify(a);
             console.log("vai enviar:");
             console.log(a);
-            resultadosService.getAnaliseCondicional($scope.pessoaId, a).then(function () {
+            resultadosService.getAnaliseCondicional($scope.pessoaId, a).then(function (condicional) {
                console.log("ENVIADO!");
+               console.log(condicional);
+               $scope.condicional = condicional;
             });
         });
     }

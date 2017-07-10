@@ -56,8 +56,7 @@ class Resultados {
     Object getAnaliseCondicional(@PathVariable Long pessoaId,
                                  @RequestBody List<Aparicao> listAparicoes){
         Pessoa owner = PR.findById(pessoaId)
-        resultadosServices.getAnaliseCondicional(owner, listAparicoes)
+        return resultadosServices.getAnaliseCondicional(owner, listAparicoes)
 
-        return null
     }
 }
