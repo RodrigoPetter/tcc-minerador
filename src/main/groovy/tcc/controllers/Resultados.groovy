@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import tcc.Classes.Aparicao
+import tcc.controllers.facebook.Extrator
 import tcc.entity.Classifier
 import tcc.entity.Foto
 import tcc.entity.Pessoa
@@ -31,6 +32,8 @@ class Resultados {
     private FotoRepository FR
     @Autowired
     private ResultadosServices resultadosServices
+    @Autowired
+    private Extrator extrator
 
     @RequestMapping(value="/{pessoaId}/total-fotos", method=RequestMethod.GET)
     Integer getTotalFotos(@PathVariable Long pessoaId){
@@ -59,4 +62,5 @@ class Resultados {
         return resultadosServices.getAnaliseCondicional(owner, listAparicoes)
 
     }
+
 }

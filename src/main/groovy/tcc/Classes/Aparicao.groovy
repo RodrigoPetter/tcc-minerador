@@ -12,5 +12,7 @@ class Aparicao {
     Integer percentual
     Integer id
     String nomeCompleto
+    String facebookId
+    String facebookProfilePhoto
 
 }

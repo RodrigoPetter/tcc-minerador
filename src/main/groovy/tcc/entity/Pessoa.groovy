@@ -27,6 +27,8 @@ class Pessoa implements Serializable{
 
     String facebookId
 
+    String facebookProfilePhoto
+
     @Column(nullable = false, unique = true)
     @NotNull
     String nomeCompleto

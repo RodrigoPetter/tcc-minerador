@@ -31,7 +31,7 @@ class Extrator {
     Object getuser(){
         String [] fields = [ "id", "age_range", "email", "first_name", "last_name", "link"]
         User userProfile = facebook.fetchObject("me", User.class, fields)
-        pessoaService.verify(userProfile)
+        pessoaService.verify(userProfile, this)
         return userProfile
     }
 
@@ -65,4 +65,5 @@ class Extrator {
     Object getFriends(){
         return facebook.friendOperations().getFriendIds()
     }
+
 }

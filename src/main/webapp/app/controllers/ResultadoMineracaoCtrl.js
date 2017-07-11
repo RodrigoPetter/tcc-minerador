@@ -9,10 +9,6 @@ function($scope, $routeParams, pessoasService, resultadosService, extratorID) {
         atualizarTela();
     });
 
-    $scope.addAmizade = function (pessoaIdNovaAmizade) {
-        alert("função não implementada");
-    };
-
     function atualizarTela(){
         resultadosService.getTotalFotos($scope.pessoaId).then(function (response) {
             console.log(response);
@@ -30,11 +26,7 @@ function($scope, $routeParams, pessoasService, resultadosService, extratorID) {
             });
 
             a = JSON.stringify(a);
-            console.log("vai enviar:");
-            console.log(a);
             resultadosService.getAnaliseCondicional($scope.pessoaId, a).then(function (condicional) {
-               console.log("ENVIADO!");
-               console.log(condicional);
                $scope.condicional = condicional;
             });
         });

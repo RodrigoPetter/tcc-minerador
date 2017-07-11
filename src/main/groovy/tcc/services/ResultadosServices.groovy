@@ -48,6 +48,8 @@ class ResultadosServices {
                 }else{
                     aparicao = new Aparicao(nomeCompleto: pessoaFoto.nomeCompleto)
                     aparicao.id = pessoaFoto.id
+                    aparicao.facebookId = pessoaFoto.facebookId
+                    aparicao.facebookProfilePhoto = pessoaFoto.facebookProfilePhoto
                     aparicao.total = 1
                     aparicoesTotal.add(aparicao)
                 }

@@ -1,8 +1,10 @@
 package tcc.services
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.social.facebook.api.Facebook
 import org.springframework.social.facebook.api.User
 import org.springframework.stereotype.Service
+import tcc.controllers.facebook.Extrator
 import tcc.entity.Pessoa
 import tcc.repository.PessoaRepository
 
@@ -19,14 +21,15 @@ class PessoaService {
     }
 
     @Transactional
-    void verify(User facebookUser){
+    void verify(User facebookUser, Extrator extrator){
 
         Pessoa pessoa = getByFacebookID(facebookUser.getId())
 
         //se pessoa ainda nao cadastrada, entao cadastra
         if(Objects.isNull(pessoa)){
             pessoa = new Pessoa(facebookId: facebookUser.getId(),
-                                nomeCompleto: facebookUser.firstName.concat(" ").concat(facebookUser.lastName))
+                                nomeCompleto: facebookUser.firstName.concat(" ").concat(facebookUser.lastName),
+                                facebookProfilePhoto: extrator.getFoto())
 
             pessoaRepository.save(pessoa)
 
