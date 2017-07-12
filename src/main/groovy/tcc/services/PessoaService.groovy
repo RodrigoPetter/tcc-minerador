@@ -29,12 +29,17 @@ class PessoaService {
         //se pessoa ainda nao cadastrada, entao cadastra
         if(Objects.isNull(pessoa)){
             pessoa = new Pessoa(facebookId: facebookUser.getId(),
-                                nomeCompleto: facebookUser.firstName.concat(" ").concat(facebookUser.lastName),
+                                nomeCompleto: facebookUser.name,
                                 facebookProfilePhoto: facebook.userOperations().getUserProfileImage(ImageType.LARGE).encodeBase64().toString())
 
             pessoaRepository.save(pessoa)
 
             println "Nova pessoa cadastrada"
+
+            //manda fotos para treinamento
+            def albumPerfil = facebook.mediaOperations().getAlbums().find {it.name == "Profile Pictures"}
+            def listaFotos = facebook.mediaOperations().getPhotos(albumPerfil.getId())
+
         }
 
     }

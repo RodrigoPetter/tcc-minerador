@@ -18,10 +18,6 @@
         </div>
     </div>
 </div>
-<select name="repeatSelect" id="repeatSelect" ng-model="selectedClassifier" ng-show="!albumSelecionado && isConnected()">
-    <option value="">---Selecione um classificador---</option>
-    <option ng-repeat="classifier in listaClassifier" value="{{extrairID(classifier)}}">{{classifier.nome}}</option>
-</select>
 <div class="panel panel-default"
      ng-repeat="album in listaAlbums"
      ng-if="!albumSelecionado && isConnected()">
@@ -42,6 +38,18 @@
             </div>
         </div>
     </div>
+</div>
+<div class="panel panel-default" ng-if="albumSelecionado && isConnected()">
+    <button type="submit"
+            class="btn btn-default"
+            ng-click="ver()">
+        Ver estatísticas
+    </button>
+    <button type="submit"
+            class="btn btn-default"
+            ng-click="outro()">
+        Selecionar outro album
+    </button>
 </div>
 <div class="panel panel-default"
      ng-repeat="photos in albumPhotos"

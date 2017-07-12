@@ -19,7 +19,11 @@ angular.module('app')
                     method:'POST',
                     url: '/resultados/:pessoaId/condicional',
                     isArray: false
-                }
+                },
+            currentUserId:{
+                method: 'GET',
+                url: '/resultados/currentUserId/:facebookId',
+            }
         });
 
     var service = {
@@ -31,6 +35,9 @@ angular.module('app')
         },
         getAnaliseCondicional: function (pessoaId, listAparicoes) {
             return resource.getAnaliseCondicional({"pessoaId": pessoaId}, listAparicoes).$promise;
+        },
+        currentUserId: function (facebookId) {
+            return resource.currentUserId({"facebookId": facebookId}).$promise;
         }
     };
     return service;

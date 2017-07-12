@@ -55,7 +55,7 @@ class ResultadosServices {
                     aparicao.facebookId = pessoaFoto.facebookId
                     aparicao.facebookProfilePhoto = pessoaFoto.facebookProfilePhoto
                     aparicao.total = 1
-                    aparicao.isAmigo = amigos.find {it == pessoaFoto.facebookId || pessoaFoto.facebookId == pessoa.facebookId} ? true : false
+                    aparicao.isAmigo = (pessoaFoto.facebookId == pessoa.facebookId || amigos.find {it == pessoaFoto.facebookId})
                     aparicoesTotal.add(aparicao)
                 }
 
@@ -103,6 +103,7 @@ class ResultadosServices {
         PaUb = lista1.size()
         PaIb = PaUb / Pb
         Prob1 = Math.floor(PaIb*100)
+
 
         //calcula o condicional do Top 3
         Pa = PaIb

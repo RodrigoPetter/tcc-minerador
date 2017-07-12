@@ -1,11 +1,12 @@
 angular.module('app')
 .controller('MineradorCtrl', ["$scope", "facebookService", "mineradorService",
-    "extratorID", "classifierService",
-    function($scope, facebookService, mineradorService, extratorID, classifierService) {
+    "extratorID", "$location", "resultadosService",
+    function($scope, facebookService, mineradorService, extratorID, $location, resultadosService) {
 
     $scope.data = {};
     $scope.extrairID = extratorID.extrair;
     $scope.albumSelecionado = false;
+    $scope.currentUserId = 0;
 
     atualizarTela();
 
@@ -30,7 +31,7 @@ angular.module('app')
 
                 console.log("vai processar foto ID: "+foto.id);
 
-                mineradorService.identificar(perfil, album, fotoId, $scope.selectedClassifier).then(function (response) {
+                mineradorService.identificar(perfil, album, fotoId).then(function (response) {
                     console.log("response: ");
                     console.log(response);
                     $scope.albumPhotos[key].resultadoAnalise = response.result;
@@ -55,6 +56,14 @@ angular.module('app')
         facebookService.getData().then(function (response) {
            $scope.profileData = response;
            console.log(response);
+
+            if($scope.profileData !== undefined) {
+                resultadosService.currentUserId($scope.profileData.id).then(function (response) {
+                    console.log("currentUserId");
+                    console.log(response);
+                    $scope.currentUserId = response.currentUserId;
+                });
+            }
         });
 
         facebookService.getProfilePhoto().then(function (response) {
@@ -75,10 +84,10 @@ angular.module('app')
 
         });
 
-        classifierService.getClassifiers().then(function (response) {
-            $scope.listaClassifier = response._embedded.classifier;
-            console.log(response._embedded.classifier);
-        });
+    }
+
+    $scope.ver = function () {
+        $location.url('/resultado-mineracao/'+$scope.currentUserId);
     }
     
 }]);

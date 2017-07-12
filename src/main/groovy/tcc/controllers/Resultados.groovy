@@ -62,5 +62,12 @@ class Resultados {
         return resultadosServices.getAnaliseCondicional(owner, listAparicoes)
 
     }
+    @RequestMapping(value="/currentUserId/{facebookId}", method=RequestMethod.GET)
+    Object getcurrentUserId(@PathVariable String facebookId){
+        Pessoa pessoa = PR.findByFacebookId(facebookId)
+        return '{"currentUserId": '+pessoa.getId()+'}'
+
+    }
+
 
 }

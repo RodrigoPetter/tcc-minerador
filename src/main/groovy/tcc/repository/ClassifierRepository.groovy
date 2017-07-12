@@ -11,4 +11,5 @@ import tcc.entity.Classifier
 interface ClassifierRepository extends JpaRepository<Classifier, Long> {
 
     Classifier findById(@Param("id") Long id)
+    List<Classifier> findAll()
 }

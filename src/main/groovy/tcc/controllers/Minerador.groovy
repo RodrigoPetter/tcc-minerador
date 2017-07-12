@@ -38,15 +38,14 @@ class Minerador {
     @RequestMapping(method=RequestMethod.GET)
     Object processarImagem(@RequestParam("profile-id") String profileId,
                            @RequestParam("album-id") String albumId,
-                           @RequestParam("foto-id") String facebookPhotoID,
-                           @RequestParam("classifier-id") Long classifierId){
+                           @RequestParam("foto-id") String facebookPhotoID){
         try {
             XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl()
             config.setServerURL(url)
 
             client.setConfig(config)
 
-            Classifier c = CR.findById(classifierId)
+            Classifier c = CR.findAll().get(0)
 
             byte[] image = extrator.getSinglePhotoImage(facebookPhotoID)
 
@@ -103,7 +102,7 @@ class Minerador {
             c.setArquivo(DatatypeConverter.parseBase64Binary(object.result.get(0).arquivo))
             CR.save(c)
 
-            c = new Classifier()
+            /*c = new Classifier()
             c.setNome(object.result.get(1).nome)
             c.setArquivo(DatatypeConverter.parseBase64Binary(object.result.get(1).arquivo))
             CR.save(c)
@@ -122,6 +121,7 @@ class Minerador {
             c.setNome(object.result.get(4).nome)
             c.setArquivo(DatatypeConverter.parseBase64Binary(object.result.get(4).arquivo))
             CR.save(c)
+            */
 
             System.out.println("Treinamento concluído.")
 
@@ -138,6 +138,8 @@ class Minerador {
                            @RequestParam("pessoa-nome") String pessoaNome){
 
         pessoaNome = "%"+pessoaNome+"%"
+
+        pessoaNome = pessoaNome.replace("_", " ")
 
         Pessoa p = PR.findByNomeCompletoLikeIgnoreCase(pessoaNome)
         if(Objects.isNull(p)){
