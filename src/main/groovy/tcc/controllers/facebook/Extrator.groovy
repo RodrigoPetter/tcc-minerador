@@ -31,7 +31,7 @@ class Extrator {
     Object getuser(){
         String [] fields = [ "id", "age_range", "email", "first_name", "last_name", "link"]
         User userProfile = facebook.fetchObject("me", User.class, fields)
-        pessoaService.verify(userProfile, this)
+        pessoaService.verify(userProfile, facebook)
         return userProfile
     }
 
@@ -63,7 +63,7 @@ class Extrator {
 
     @RequestMapping("/profile/friends")
     Object getFriends(){
-        return facebook.friendOperations().getFriendIds()
+        return facebook.friendOperations().getFriendIds().toArray()
     }
 
 }

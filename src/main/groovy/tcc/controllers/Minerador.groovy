@@ -31,7 +31,7 @@ class Minerador {
     private ClassifierRepository CR
     @Autowired
     private Extrator extrator
-    private URL url = new URL("http://192.168.0.16:8081/RPC2")
+    private URL url = new URL("http://192.168.0.14:8081/RPC2")
     private XmlRpcClient client = new XmlRpcClient()
     private JsonSlurper jsonSlurper = new JsonSlurper()
 

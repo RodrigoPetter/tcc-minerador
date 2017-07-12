@@ -6,34 +6,35 @@
         <h2>Pessoas que apareceram em suas fotos</h2>
         <table class="table table-bordered table-striped table-hover">
             <thead>
-                <th></th>
-                <th>Nome amigo</th>
-                <th>Aparece em %</th>
-                <th>Aparições</th>
-                <th></th>
+            <th></th>
+            <th>Nome amigo</th>
+            <th>Aparece em %</th>
+            <th>Aparições</th>
+            <th></th>
             </thead>
             <tbody>
-                <tr ng-repeat="pessoa in listaAparicoes">
-                    <td><img style="max-width: 90px"
-                            data-ng-src="data:image/png;base64,{{pessoa.facebookProfilePhoto}}"/></td>
-                    <td>
-                        <span ng-bind="pessoa.nomeCompleto"></span>
-                    </td>
-                    <td>
-                        <span ng-bind="pessoa.percentual"></span>%
-                    </td>
-                    <td>
-                        <span ng-bind="pessoa.total"></span>
-                    </td>
-                    <td>
-                        <a href="http://www.facebook.com/addfriend.php?id={{pessoa.facebookId}}">Começar amizade</a>
-                        https://stackoverflow.com/questions/2421200/can-i-add-friend-with-facebooks-api
+            <tr ng-repeat="pessoa in listaAparicoes">
+                <td><img style="max-width: 90px"
+                         data-ng-src="data:image/png;base64,{{pessoa.facebookProfilePhoto}}"/></td>
+                <td>
+                    <span ng-bind="pessoa.nomeCompleto"></span>
+                </td>
+                <td>
+                    <span ng-bind="pessoa.percentual"></span>%
+                </td>
+                <td>
+                    <span ng-bind="pessoa.total"></span>
+                </td>
+                <td>
+                    <!--https://stackoverflow.com/questions/2421200/can-i-add-friend-with-facebooks-api-->
+                    <a href="http://www.facebook.com/{{pessoa.facebookId}}" target="_blank">
                         <button type="submit"
                                 class="btn btn-default"
-                                ng-click="addAmizade(pessoa.id)"
-                                ng-show="!pessoa.isAmigo">Começar amizade</button>
-                    </td>
-                </tr>
+                                ng-show="!pessoa.isAmigo">Começar amizade
+                        </button>
+                    </a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

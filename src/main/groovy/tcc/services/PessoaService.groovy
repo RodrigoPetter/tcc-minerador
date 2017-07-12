@@ -2,6 +2,7 @@ package tcc.services
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.social.facebook.api.Facebook
+import org.springframework.social.facebook.api.ImageType
 import org.springframework.social.facebook.api.User
 import org.springframework.stereotype.Service
 import tcc.controllers.facebook.Extrator
@@ -21,7 +22,7 @@ class PessoaService {
     }
 
     @Transactional
-    void verify(User facebookUser, Extrator extrator){
+    void verify(User facebookUser, Facebook facebook){
 
         Pessoa pessoa = getByFacebookID(facebookUser.getId())
 
@@ -29,7 +30,7 @@ class PessoaService {
         if(Objects.isNull(pessoa)){
             pessoa = new Pessoa(facebookId: facebookUser.getId(),
                                 nomeCompleto: facebookUser.firstName.concat(" ").concat(facebookUser.lastName),
-                                facebookProfilePhoto: extrator.getFoto())
+                                facebookProfilePhoto: facebook.userOperations().getUserProfileImage(ImageType.LARGE).encodeBase64().toString())
 
             pessoaRepository.save(pessoa)
 

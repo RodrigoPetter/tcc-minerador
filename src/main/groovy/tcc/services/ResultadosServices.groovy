@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import tcc.Classes.Aparicao
+import tcc.controllers.facebook.Extrator
 import tcc.entity.Pessoa
 import tcc.repository.FotoRepository
 import tcc.repository.PessoaRepository
 
-import java.text.Format
 import java.util.stream.Collectors
 
 @Service
@@ -18,6 +18,8 @@ class ResultadosServices {
     private FotoRepository fotoRepository
     @Autowired
     private PessoaRepository pessoaRepository
+    @Autowired
+    private Extrator extrator
 
     @Transactional(readOnly=true)
     Integer getTotalFotos(Pessoa pessoa){
@@ -31,6 +33,8 @@ class ResultadosServices {
     List<Aparicao> getAparicoes(Pessoa pessoa){
 
         List<Aparicao> aparicoesTotal = new ArrayList<Aparicao>()
+
+        ArrayList<String> amigos = extrator.getFriends()
 
         pessoa.fotos.removeIf{!it.analisada}
 
@@ -51,6 +55,7 @@ class ResultadosServices {
                     aparicao.facebookId = pessoaFoto.facebookId
                     aparicao.facebookProfilePhoto = pessoaFoto.facebookProfilePhoto
                     aparicao.total = 1
+                    aparicao.isAmigo = amigos.find {it == pessoaFoto.facebookId || pessoaFoto.facebookId == pessoa.facebookId} ? true : false
                     aparicoesTotal.add(aparicao)
                 }
 
@@ -92,16 +97,17 @@ class ResultadosServices {
         String Prob1, Prob2
 
         //calcula o condicional do Top 2
-        Pa = aparicaoPessoa1.total / totalFotos
-        Pb = aparicaoPessoa2.total / totalFotos
-        PaUb = Pa*Pb
+        Pa = aparicaoPessoa1.total
+        Pb = aparicaoPessoa2.total
+        def lista1 = pessoa1.getApareceEm().stream().findAll {foto -> foto.compostaPor.find { pessoaFoto -> pessoaFoto.facebookId == pessoa2.facebookId}}
+        PaUb = lista1.size()
         PaIb = PaUb / Pb
         Prob1 = Math.floor(PaIb*100)
 
         //calcula o condicional do Top 3
         Pa = PaIb
-        Pb = aparicaoPessoa3.total / totalFotos
-        PaUb = Pa*Pb
+        Pb = aparicaoPessoa3.total
+        PaUb = lista1.stream().findAll{foto -> foto.compostaPor.find { pessoaFoto -> pessoaFoto.facebookId == pessoa3.facebookId}}.size()
         PaIb = PaUb / Pb
         Prob2 = Math.floor(PaIb*100)
 
